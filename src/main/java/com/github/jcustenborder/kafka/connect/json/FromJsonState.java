@@ -17,7 +17,7 @@ package com.github.jcustenborder.kafka.connect.json;
 
 
 class FromJsonState {
-  public final org.everit.json.schema.Schema jsonSchema;
+  public org.everit.json.schema.Schema jsonSchema;
   public final org.apache.kafka.connect.data.Schema schema;
   public final FromJsonVisitor visitor;
 

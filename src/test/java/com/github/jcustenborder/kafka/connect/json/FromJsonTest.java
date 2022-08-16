@@ -75,22 +75,27 @@ public class FromJsonTest {
   @Test
   public void validate() throws IOException {
     byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
-        "basic.data.json"
+        "invoice.data.json"
     ));
-    File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/geo.schema.json");
+    File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices.json");
+    File connectSchemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices_connect.json");
     Map<String, String> settings = ImmutableMap.of(
         JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
+        JsonConfig.CONNECT_SCHEMA_URL_CONF, connectSchemaFile.toURI().toString(),
         JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true"
     );
     this.transform.configure(settings);
     SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
-    DataException exception = assertThrows(DataException.class, () -> {
-      SinkRecord transformedRecord = this.transform.apply(inputRecord);
-    });
+    SinkRecord transformedRecord = this.transform.apply(inputRecord);
 
-    assertTrue(exception.getMessage().contains("required key [latitude] not found"));
-    assertTrue(exception.getMessage().contains("required key [longitude] not found"));
+//    DataException exception = assertThrows(DataException.class, () -> {
+//      SinkRecord transformedRecord = this.transform.apply(inputRecord);
+//    });
+//    assertTrue(exception.getMessage().contains("required key [latitude] not found"));
+//    assertTrue(exception.getMessage().contains("required key [longitude] not found"));
   }
+
+
   @Test
   public void wikiMediaRecentChange() throws IOException {
     byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(

@@ -1,0 +1,843 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$id": "http://api.example.com/profile.json",
+    "type": "object",
+    "properties": {
+        "public_service_provider": {
+            "type": ["null", "string"],
+            "maxLength": 150
+        },
+        "tsz_invoice_id": {
+            "type": ["null", "integer"],
+            "maximum": 10000000000000,
+            "exclusiveMaximum": true
+        },
+        "tsz_invoice_nr": {
+            "type": ["null", "number"],
+            "maximum": 1e+24,
+            "exclusiveMaximum": true,
+            "multipleOf": 1
+        },
+        "tsz_original_invoice_nr": {
+            "type": ["null", "number"],
+            "maximum": 1e+24,
+            "exclusiveMaximum": true,
+            "multipleOf": 1
+        },
+        "inv_fullfilment_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_duedate": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_reckoning_datefrom": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_reckoning_dateto": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_billing_cycle": {
+            "type": ["null", "integer"],
+            "maximum": 1000000,
+            "exclusiveMaximum": true
+        },
+        "tsz_cust_id": {
+            "type": ["null", "integer"],
+            "maximum": 10000000000,
+            "exclusiveMaximum": true
+        },
+        "tsz_bill_collector_id": {
+            "type": ["null", "integer"],
+            "maximum": 1000000000000,
+            "exclusiveMaximum": true
+        },
+        "inv_cust_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "inv_invoice_name": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "inv_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "inv_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_address": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "inv_group_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "inv_nav_online_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "inv_bank_account_nr": {
+            "type": ["null", "string"],
+            "maxLength": 24
+        },
+        "inv_net_amount": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_vat": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_gross_amount": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_amount_currency": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_allocated_amount_from_overpayment": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_amount_of_support": {
+            "type": ["null", "number"],
+            "maximum": 10000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.01
+        },
+        "inv_payable_amount": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_cheque_amount": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_cheque_payment_id": {
+            "type": ["null", "string"],
+            "maxLength": 24
+        },
+        "inv_original_balance": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_original_balance_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_previous_balance": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_actual_balance": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "tsz_place_of_service_id": {
+            "type": ["null", "integer"],
+            "maximum": 1000000000000,
+            "exclusiveMaximum": true
+        },
+        "inv_place_of_service_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "inv_place_of_service_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "inv_place_of_service_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_place_of_service_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "tsz_service_user_id": {
+            "type": ["null", "integer"],
+            "maximum": 1000000000000,
+            "exclusiveMaximum": true
+        },
+        "inv_service_user_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "inv_service_user_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "inv_service_user_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_service_user_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "inv_service_user_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "inv_service_user_type": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "inv_overhead_reduction_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "inv_format_type": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_overhead_reduction_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_sconto_discount_percent": {
+            "type": ["null", "number"],
+            "maximum": 100000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_sconto_duedate": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "inv_sconto_discount_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "inv_payment_type": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_payment_term_days": {
+            "type": ["null", "string"],
+            "maxLength": 3
+        },
+        "inv_cust_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "inv_cust_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "inv_cust_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_cust_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "inv_postal_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "inv_postal_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "inv_postal_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_postal_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "inv_type": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_status": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "tsz_replacement_document_id": {
+            "type": ["null", "integer"],
+            "maximum": 10000000000000,
+            "exclusiveMaximum": true
+        },
+        "repdoc_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_group_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_foreign_tax_nr_eu": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_foreign_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_invoice_name": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_invoice_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_invoice_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_invoice_address": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_cust_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "repdoc_cust_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "repdoc_cust_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_cust_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_cust_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_place_of_service_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_place_of_service_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_place_of_service_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_service_user_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "repdoc_payment_type": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_previous_balance": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "repdoc_overhead_reduction_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "repdoc_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "repdoc_duedate": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "repdoc_financial_settle": {
+            "type": ["null", "string"],
+            "maxLength": 320
+        },
+        "repdoc_date_change": {
+            "type": ["null", "string"],
+            "maxLength": 320
+        },
+        "repdoc_invoice_info": {
+            "type": ["null", "string"],
+            "maxLength": 320
+        },
+        "repdoc_tax_nr_new": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_group_tax_nr_new": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_foreign_tax_nr_eu_new": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_foreign_tax_nr_new": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "repdoc_invoice_name_new": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_invoice_zip_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_invoice_city_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_invoice_address_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_cust_name_new": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "repdoc_cust_country_new": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "repdoc_cust_zip_new": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_cust_city_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_cust_address_new": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_zip_new": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_city_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_address_new": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_place_of_service_zip_new": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "repdoc_place_of_service_city_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_place_of_service_address_new": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "repdoc_service_user_name_new": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "repdoc_payment_type_new": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "repdoc_previous_balance_new": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "repdoc_overhead_reduction_gross_new": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "repdoc_date_new": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "repdoc_duedate_new": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "repdoc_financial_settle_new": {
+            "type": ["null", "string"],
+            "maxLength": 320
+        },
+        "repdoc_date_change_new": {
+            "type": ["null", "string"],
+            "maxLength": 320
+        },
+        "repdoc_invoice_info_new": {
+            "type": ["null", "string"],
+            "maxLength": 320
+        },
+        "repdoc_note": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "inv_einvoice_email": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "inv_dijnet_id": {
+            "type": ["null", "string"],
+            "maxLength": 23
+        },
+        "tsz_original_invoice_id": {
+            "type": ["null", "integer"],
+            "maximum": 10000000000000,
+            "exclusiveMaximum": true
+        },
+        "tsz_referred_invoice_id": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "inv_international_tax_nr_eu": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "inv_international_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "tsz_fee_service_id": {
+            "type": ["null", "integer"],
+            "maximum": 1000000000000,
+            "exclusiveMaximum": true
+        },
+        "invfee_term_datefrom": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invfee_term_dateto": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invfee_reckoning_datefrom": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invfee_reckoning_dateto": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invfee_quantity": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_unit_of_measure": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "invfee_overhead_reduction_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "invfee_unit_price": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_rate": {
+            "type": ["null", "number"],
+            "maximum": 10000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_unit_of_measure_fixed": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "invfee_overhead_reduction_rate": {
+            "type": ["null", "number"],
+            "maximum": 100000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_net": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_vat": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_priced_liters": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_net_without_oreduction": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_vat_without_oreduction": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_gross_without_oreduction": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_overhead_reduction_net": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_overhead_reduction_vat": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_overhead_reduction_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_type": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "tsz_othercharge_service_id": {
+            "type": ["null", "integer"],
+            "maximum": 1000000000000,
+            "exclusiveMaximum": true
+        },
+        "invothercharge_term_datefrom": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invothercharge_term_dateto": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invothercharge_reckoning_datefrom": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invothercharge_reckoning_dateto": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "invothercharge_quantity": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_unit_of_measure": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "invothercharge_overhead_reduction_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "invothercharge_unit_price": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_rate": {
+            "type": ["null", "number"],
+            "maximum": 10000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_unit_of_measure_fixed": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "invothercharge_overhead_reduction_rate": {
+            "type": ["null", "number"],
+            "maximum": 100000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_net": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_vat": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_priced_liters": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_net_without_oreduction": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_vat_without_oreduction": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_gross_without_oreduction": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_overhead_reduction_net": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_overhead_reduction_vat": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invothercharge_overhead_reduction_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "invfee_fee_record_number": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "public_service_provider_id": {
+            "type": ["null", "string"],
+            "maxLength": 4
+        },
+        "public_service_int_provider_id": {
+            "type": ["null", "integer"],
+            "maximum": 10000,
+            "exclusiveMaximum": true
+        },
+        "public_service_int_provider_name": {
+            "type": ["null", "string"],
+            "maxLength": 150
+        },
+        "invothercharge_vat_type": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "invothercharge_brutto_type": {
+            "type": ["null", "integer"],
+            "maximum": 1000000000000,
+            "exclusiveMaximum": true
+        },
+        "inv_overhead_reduction_akt_gross": {
+            "type": ["null", "number"],
+            "maximum": 1000000000000000,
+            "exclusiveMaximum": true,
+            "multipleOf": 0.0001
+        },
+        "batch_id": {
+            "type": ["null", "string"],
+            "maxLength": 23
+        }
+    },
+    "required": ["public_service_provider", "tsz_invoice_id", "tsz_invoice_nr", "tsz_original_invoice_nr", "inv_fullfilment_date", "inv_date", "inv_duedate", "inv_reckoning_datefrom", "inv_reckoning_dateto", "inv_billing_cycle", "tsz_cust_id", "tsz_bill_collector_id", "inv_cust_name", "inv_invoice_name", "inv_zip", "inv_city", "inv_address", "inv_tax_nr", "inv_group_tax_nr", "inv_nav_online_flag", "inv_bank_account_nr", "inv_net_amount", "inv_vat", "inv_gross_amount", "inv_amount_currency", "inv_allocated_amount_from_overpayment", "inv_amount_of_support", "inv_payable_amount", "inv_cheque_amount", "inv_cheque_payment_id", "inv_original_balance", "inv_original_balance_date", "inv_previous_balance", "inv_actual_balance", "tsz_place_of_service_id", "inv_place_of_service_country", "inv_place_of_service_zip", "inv_place_of_service_city", "inv_place_of_service_address", "tsz_service_user_id", "inv_service_user_country", "inv_service_user_zip", "inv_service_user_city", "inv_service_user_address", "inv_service_user_name", "inv_service_user_type", "inv_overhead_reduction_flag", "inv_format_type", "inv_overhead_reduction_gross", "inv_sconto_discount_percent", "inv_sconto_duedate", "inv_sconto_discount_gross", "inv_payment_type", "inv_payment_term_days", "inv_cust_country", "inv_cust_zip", "inv_cust_city", "inv_cust_address", "inv_postal_country", "inv_postal_zip", "inv_postal_city", "inv_postal_address", "inv_type", "inv_status", "tsz_replacement_document_id", "repdoc_tax_nr", "repdoc_group_tax_nr", "repdoc_foreign_tax_nr_eu", "repdoc_foreign_tax_nr", "repdoc_invoice_name", "repdoc_invoice_zip", "repdoc_invoice_city", "repdoc_invoice_address", "repdoc_cust_name", "repdoc_cust_country", "repdoc_cust_zip", "repdoc_cust_city", "repdoc_cust_address", "repdoc_zip", "repdoc_city", "repdoc_address", "repdoc_place_of_service_zip", "repdoc_place_of_service_city", "repdoc_place_of_service_address", "repdoc_service_user_name", "repdoc_payment_type", "repdoc_previous_balance", "repdoc_overhead_reduction_gross", "repdoc_date", "repdoc_duedate", "repdoc_financial_settle", "repdoc_date_change", "repdoc_invoice_info", "repdoc_tax_nr_new", "repdoc_group_tax_nr_new", "repdoc_foreign_tax_nr_eu_new", "repdoc_foreign_tax_nr_new", "repdoc_invoice_name_new", "repdoc_invoice_zip_new", "repdoc_invoice_city_new", "repdoc_invoice_address_new", "repdoc_cust_name_new", "repdoc_cust_country_new", "repdoc_cust_zip_new", "repdoc_cust_city_new", "repdoc_cust_address_new", "repdoc_zip_new", "repdoc_city_new", "repdoc_address_new", "repdoc_place_of_service_zip_new", "repdoc_place_of_service_city_new", "repdoc_place_of_service_address_new", "repdoc_service_user_name_new", "repdoc_payment_type_new", "repdoc_previous_balance_new", "repdoc_overhead_reduction_gross_new", "repdoc_date_new", "repdoc_duedate_new", "repdoc_financial_settle_new", "repdoc_date_change_new", "repdoc_invoice_info_new", "repdoc_note", "inv_einvoice_email", "inv_dijnet_id", "tsz_original_invoice_id", "tsz_referred_invoice_id", "inv_international_tax_nr_eu", "inv_international_tax_nr", "tsz_fee_service_id", "invfee_term_datefrom", "invfee_term_dateto", "invfee_reckoning_datefrom", "invfee_reckoning_dateto", "invfee_quantity", "invfee_unit_of_measure", "invfee_overhead_reduction_flag", "invfee_unit_price", "invfee_rate", "invfee_unit_of_measure_fixed", "invfee_overhead_reduction_rate", "invfee_net", "invfee_vat", "invfee_gross", "invfee_priced_liters", "invfee_net_without_oreduction", "invfee_vat_without_oreduction", "invfee_gross_without_oreduction", "invfee_overhead_reduction_net", "invfee_overhead_reduction_vat", "invfee_overhead_reduction_gross", "invothercharge_type", "tsz_othercharge_service_id", "invothercharge_term_datefrom", "invothercharge_term_dateto", "invothercharge_reckoning_datefrom", "invothercharge_reckoning_dateto", "invothercharge_quantity", "invothercharge_unit_of_measure", "invothercharge_overhead_reduction_flag", "invothercharge_unit_price", "invothercharge_rate", "invothercharge_unit_of_measure_fixed", "invothercharge_overhead_reduction_rate", "invothercharge_net", "invothercharge_vat", "invothercharge_gross", "invothercharge_priced_liters", "invothercharge_net_without_oreduction", "invothercharge_vat_without_oreduction", "invothercharge_gross_without_oreduction", "invothercharge_overhead_reduction_net", "invothercharge_overhead_reduction_vat", "invothercharge_overhead_reduction_gross", "invfee_fee_record_number", "public_service_provider_id", "public_service_int_provider_id", "public_service_int_provider_name", "invothercharge_vat_type", "invothercharge_brutto_type", "inv_overhead_reduction_akt_gross", "batch_id"],
+    "additionalProperties": false
+}

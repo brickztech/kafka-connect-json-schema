@@ -1,0 +1,591 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://api.example.com/profile.json",
+    "type": "object",
+    "properties": {
+        "tsz_cust_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 10000000000
+        },
+        "cust_name_prefix": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "cust_name_suffix": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_maiden_name": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_mothers_name": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_date_of_birth": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "cust_place_of_birth": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_type": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_group": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_phone": {
+            "type": ["null", "string"],
+            "maxLength": 18
+        },
+        "cust_email": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "cust_id_nr": {
+            "type": ["null", "string"],
+            "maxLength": 13
+        },
+        "cust_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_group_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_foreign_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_tax_id": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_bank_account_nr": {
+            "type": ["null", "string"],
+            "maxLength": 24
+        },
+        "cust_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "cust_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "cust_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "cust_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "cust_country_pure": {
+            "type": ["null", "string"],
+            "maxLength": 2
+        },
+        "cust_zip_pure": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "cust_city_pure": {
+            "type": ["null", "string"],
+            "maxLength": 255
+        },
+        "cust_public_place_pure": {
+            "type": ["null", "string"],
+            "maxLength": 255
+        },
+        "cust_public_place_type_pure": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "cust_building_nr_pure": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_address_attributes_pure": {
+            "type": ["null", "string"],
+            "maxLength": 5
+        },
+        "cust_stairs_pure": {
+            "type": ["null", "string"],
+            "maxLength": 5
+        },
+        "cust_floor_pure": {
+            "type": ["null", "string"],
+            "maxLength": 5
+        },
+        "cust_door_pure": {
+            "type": ["null", "string"],
+            "maxLength": 5
+        },
+        "tsz_bill_collector_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "cust_invoice_name": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "cust_invoice_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "cust_invoice_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "cust_invoice_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "cust_invoice_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "cust_direct_debit_auth": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_direct_debit_bank_id": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_direct_debit_ext_id": {
+            "type": ["null", "string"],
+            "maxLength": 24
+        },
+        "cust_4t_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "cust_4t_country_of_birth": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_4t_place_of_birth": {
+            "type": ["null", "string"],
+            "maxLength": 30
+        },
+        "cust_4t_date_of_birth": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "cust_4t_mothers_name": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_4t_nav_type": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "cust_4t_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_4t_group_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "cust_4t_foreign_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "public_service_provider": {
+            "type": ["null", "string"],
+            "maxLength": 150
+        },
+        "tsz_place_of_service_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "place_of_service_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "place_of_service_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "place_of_service_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "place_of_service_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "place_of_service_type": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "tsz_main_place_of_service_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "place_of_service_apartment_house_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000,
+            "multipleOf": 0.0001
+        },
+        "place_of_service_nr_of_persons": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 10000
+        },
+        "place_of_service_overhead_reduction_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000,
+            "multipleOf": 0.0001
+        },
+        "place_of_service_status": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "place_of_service_discount_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "tsz_recipient_place_of_service_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "tsz_service_user_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "service_user_type": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_user_country": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "service_user_zip": {
+            "type": ["null", "string"],
+            "maxLength": 9
+        },
+        "service_user_city": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "service_user_address": {
+            "type": ["null", "string"],
+            "maxLength": 80
+        },
+        "service_user_name_prefix": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_user_name": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "service_user_name_suffix": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_user_tax_nr": {
+            "type": ["null", "string"],
+            "maxLength": 20
+        },
+        "service_user_date_of_birth": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "service_user_place_of_birth": {
+            "type": ["null", "string"],
+            "maxLength": 50
+        },
+        "service_user_maiden_name": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_user_mothers_name": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_user_phone": {
+            "type": ["null", "string"],
+            "maxLength": 50
+        },
+        "service_user_email": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "service_user_id_nr": {
+            "type": ["null", "string"],
+            "maxLength": 13
+        },
+        "service_user_contract_nr": {
+            "type": ["null", "string"],
+            "maxLength": 25
+        },
+        "tsz_service_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "service_type": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_description": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "service_quantity": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_status": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_suspend_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "service_order_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "service_start_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "service_finish_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "service_finish_reason": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_billing_status": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_overhead_reduction_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "service_pricing_method": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "service_price_description": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "service_price": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000000,
+            "multipleOf": 0.0001
+        },
+        "service_price_overhead_reduction": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000000,
+            "multipleOf": 0.0001
+        },
+        "service_price_currency": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_gl_nr": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 10000000000
+        },
+        "service_gl_nr_overhead_reduction": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 10000000000
+        },
+        "tsz_main_service_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "service_apartment_house_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000,
+            "multipleOf": 0.0001
+        },
+        "service_nr_of_persons": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 100000000
+        },
+        "tsz_service_device_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "service_device_type": {
+            "type": ["null", "string"],
+            "maxLength": 40
+        },
+        "service_device_size": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_device_owner": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_chip_id": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "service_dumping_days_week": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "service_dumping_days_month": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "tsz_takeover_cust_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "tsz_takeover_bill_collector_id": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "service_fee_takeover_percent": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000,
+            "multipleOf": 0.0001
+        },
+        "service_fee_takeover_amount": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_fee_takeover_uprice": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_fee_takeover_measure": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000,
+            "multipleOf": 0.0001
+        },
+        "tsz_takeover_cust_id_apartment_rate": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "tsz_takeover_bill_collector_id_apartment_rate": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000
+        },
+        "service_fee_takeover_percent_apartment_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 100000000,
+            "multipleOf": 0.0001
+        },
+        "service_fee_takeover_amount_apartment_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_fee_takeover_uprice_apartment_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_fee_takeover_measure_apartment_rate": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000,
+            "multipleOf": 0.0001
+        },
+        "pricing_param_billing_title": {
+            "type": ["null", "string"],
+            "maxLength": 120
+        },
+        "pricing_param_vat": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 10000,
+            "multipleOf": 0.01
+        },
+        "pricing_param_szj": {
+            "type": ["null", "string"],
+            "maxLength": 15
+        },
+        "pricing_param_nr_of_priced_months": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 100
+        },
+        "pricing_param_priced_liters": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 10000000000
+        },
+        "pricing_param_unit_of_measure": {
+            "type": ["null", "string"],
+            "maxLength": 60
+        },
+        "pricing_param_liter_price_flag": {
+            "type": ["null", "string"],
+            "maxLength": 1
+        },
+        "pricing_param_nr_of_priced_dumps": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 10000000000,
+            "multipleOf": 0.0001
+        },
+        "pricing_param_frequency_multiplier": {
+            "type": ["null", "number"],
+            "exclusiveMaximum": 1000000000000000,
+            "multipleOf": 0.0001
+        },
+        "service_attributes": {
+            "type": ["null", "string"],
+            "maxLength": 200
+        },
+        "service_note": {
+            "type": ["null", "string"],
+            "maxLength": 200
+        },
+        "place_of_service_records_num": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000000
+        },
+        "service_records_num": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000000
+        },
+        "cust_sum_record_num": {
+            "type": ["null", "integer"],
+            "exclusiveMaximum": 1000000000000000
+        },
+        "tsz_public_service_provider_id": {
+            "type": ["null", "string"],
+            "maxLength": 4
+        },
+        "tsz_record_creation_date": {
+            "type": ["null", "string"],
+            "pattern": "[1-2]\\d{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+        },
+        "tsz_record_creator_user": {
+            "type": ["null", "string"],
+            "maxLength": 10
+        },
+        "batch_id": {
+            "type": ["null", "string"],
+            "maxLength": 23
+        }
+    },
+    "required": ["tsz_cust_id", "cust_name_prefix", "cust_name", "cust_name_suffix", "cust_maiden_name", "cust_mothers_name", "cust_date_of_birth", "cust_place_of_birth", "cust_type", "cust_group", "cust_phone", "cust_email", "cust_id_nr", "cust_tax_nr", "cust_group_tax_nr", "cust_foreign_tax_nr", "cust_tax_id", "cust_bank_account_nr", "cust_country", "cust_zip", "cust_city", "cust_address", "cust_country_pure", "cust_zip_pure", "cust_city_pure", "cust_public_place_pure", "cust_public_place_type_pure", "cust_building_nr_pure", "cust_address_attributes_pure", "cust_stairs_pure", "cust_floor_pure", "cust_door_pure", "tsz_bill_collector_id", "cust_invoice_name", "cust_invoice_country", "cust_invoice_zip", "cust_invoice_city", "cust_invoice_address", "cust_direct_debit_auth", "cust_direct_debit_bank_id", "cust_direct_debit_ext_id", "cust_4t_name", "cust_4t_country_of_birth", "cust_4t_place_of_birth", "cust_4t_date_of_birth", "cust_4t_mothers_name", "cust_4t_nav_type", "cust_4t_tax_nr", "cust_4t_group_tax_nr", "cust_4t_foreign_tax_nr", "public_service_provider", "tsz_place_of_service_id", "place_of_service_country", "place_of_service_zip", "place_of_service_city", "place_of_service_address", "place_of_service_type", "tsz_main_place_of_service_id", "place_of_service_apartment_house_rate", "place_of_service_nr_of_persons", "place_of_service_overhead_reduction_rate", "place_of_service_status", "place_of_service_discount_flag", "tsz_recipient_place_of_service_id", "tsz_service_user_id", "service_user_type", "service_user_country", "service_user_zip", "service_user_city", "service_user_address", "service_user_name_prefix", "service_user_name", "service_user_name_suffix", "service_user_tax_nr", "service_user_date_of_birth", "service_user_place_of_birth", "service_user_maiden_name", "service_user_mothers_name", "service_user_phone", "service_user_email", "service_user_id_nr", "service_user_contract_nr", "tsz_service_id", "service_type", "service_description", "service_quantity", "service_status", "service_suspend_flag", "service_order_date", "service_start_date", "service_finish_date", "service_finish_reason", "service_billing_status", "service_overhead_reduction_flag", "service_pricing_method", "service_price_description", "service_price", "service_price_overhead_reduction", "service_price_currency", "service_gl_nr", "service_gl_nr_overhead_reduction", "tsz_main_service_id", "service_apartment_house_rate", "service_nr_of_persons", "tsz_service_device_id", "service_device_type", "service_device_size", "service_device_owner", "service_chip_id", "service_dumping_days_week", "service_dumping_days_month", "tsz_takeover_cust_id", "tsz_takeover_bill_collector_id", "service_fee_takeover_percent", "service_fee_takeover_amount", "service_fee_takeover_uprice", "service_fee_takeover_measure", "tsz_takeover_cust_id_apartment_rate", "tsz_takeover_bill_collector_id_apartment_rate", "service_fee_takeover_percent_apartment_rate", "service_fee_takeover_amount_apartment_rate", "service_fee_takeover_uprice_apartment_rate", "service_fee_takeover_measure_apartment_rate", "pricing_param_billing_title", "pricing_param_vat", "pricing_param_szj", "pricing_param_nr_of_priced_months", "pricing_param_priced_liters", "pricing_param_unit_of_measure", "pricing_param_liter_price_flag", "pricing_param_nr_of_priced_dumps", "pricing_param_frequency_multiplier", "service_attributes", "service_note", "place_of_service_records_num", "service_records_num", "cust_sum_record_num", "tsz_public_service_provider_id", "tsz_record_creation_date", "tsz_record_creator_user", "batch_id"],
+    "additionalProperties": false
+}
