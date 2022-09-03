@@ -126,7 +126,13 @@ public abstract class FromJsonSchemaConverter<T extends org.everit.json.schema.S
                     .forEach(e -> {
                         final String propertyName = e.getKey();
                         final org.everit.json.schema.Schema propertyJsonSchema = e.getValue();
-                        final boolean isOptional = !requiredProperties.contains(propertyName);
+                        boolean isOptional;
+                        if (propertyJsonSchema instanceof CombinedSchema) {
+                            CombinedSchema types = (CombinedSchema) propertyJsonSchema;
+                            isOptional = types.getSubschemas().stream().anyMatch(NullSchema.class::isInstance);
+                        } else {
+                            isOptional = !requiredProperties.contains(propertyName);
+                        }
                         log.trace("fromJson() - Processing property '{}' '{}'", propertyName, propertyJsonSchema);
                         FromJsonState state = this.factory.fromJSON(propertyJsonSchema, isOptional);
                         builder.field(propertyName, state.schema);

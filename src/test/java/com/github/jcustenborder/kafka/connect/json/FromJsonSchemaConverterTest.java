@@ -153,7 +153,7 @@ public class FromJsonSchemaConverterTest {
                 .doc("A product from Acme's catalog")
                 .field("price", SchemaBuilder.float64().doc("The price of the product").build())
                 .field("productId", SchemaBuilder.int64().doc("The unique identifier for a product").build())
-                .field("productName", SchemaBuilder.string().doc("Name of the product").build())
+                .field("productName", SchemaBuilder.string().doc("Name of the product").optional().build())
                 .build();
         assertJsonSchema(expected, jsonSchema);
     }
