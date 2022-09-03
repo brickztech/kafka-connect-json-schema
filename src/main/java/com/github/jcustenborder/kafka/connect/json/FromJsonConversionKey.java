@@ -1,12 +1,12 @@
 /**
  * Copyright © 2020 Jeremy Custenborder (jcustenborder@gmail.com)
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,65 +24,65 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class FromJsonConversionKey {
-  static final String UNNAMED_FORMAT = "unnamed-format";
-  private static final Logger log = LoggerFactory.getLogger(FromJsonConversionKey.class);
-  final Class<? extends org.everit.json.schema.Schema> schemaClass;
-  final String format;
-  final Boolean requiresInteger;
-  final String contentEncoding;
+    static final String UNNAMED_FORMAT = "unnamed-format";
+    private static final Logger log = LoggerFactory.getLogger(FromJsonConversionKey.class);
+    final Class<? extends org.everit.json.schema.Schema> schemaClass;
+    final String format;
+    final Boolean requiresInteger;
+    final String contentEncoding;
 
-  private FromJsonConversionKey(Class<? extends Schema> schemaClass, String format, Boolean requiresInteger, String contentEncoding) {
-    this.schemaClass = schemaClass;
-    this.format = format;
-    this.requiresInteger = requiresInteger;
-    this.contentEncoding = contentEncoding;
-  }
-
-  public static FromJsonConversionKey of(org.everit.json.schema.Schema jsonSchema) {
-    String format;
-    Boolean requiresInteger;
-    String contentEncoding;
-    if (jsonSchema instanceof StringSchema) {
-      StringSchema stringSchema = (StringSchema) jsonSchema;
-      format = UNNAMED_FORMAT.equals(stringSchema.getFormatValidator().formatName()) ? null : stringSchema.getFormatValidator().formatName();
-      contentEncoding = (String) stringSchema.getUnprocessedProperties().get("contentEncoding");
-      requiresInteger = null;
-      log.trace("jsonSchema = '{}' format = '{}'", jsonSchema, format);
-    } else if (jsonSchema instanceof NumberSchema) {
-      NumberSchema numberSchema = (NumberSchema) jsonSchema;
-      requiresInteger = numberSchema.requiresInteger();
-      format = null;
-      contentEncoding = null;
-    } else {
-      format = null;
-      requiresInteger = null;
-      contentEncoding = null;
+    private FromJsonConversionKey(Class<? extends Schema> schemaClass, String format, Boolean requiresInteger, String contentEncoding) {
+        this.schemaClass = schemaClass;
+        this.format = format;
+        this.requiresInteger = requiresInteger;
+        this.contentEncoding = contentEncoding;
     }
 
-    return new FromJsonConversionKey(jsonSchema.getClass(), format, requiresInteger, contentEncoding);
-  }
+    public static FromJsonConversionKey of(org.everit.json.schema.Schema jsonSchema) {
+        String format;
+        Boolean requiresInteger;
+        String contentEncoding;
+        if (jsonSchema instanceof StringSchema) {
+            StringSchema stringSchema = (StringSchema) jsonSchema;
+            format = UNNAMED_FORMAT.equals(stringSchema.getFormatValidator().formatName()) ? null : stringSchema.getFormatValidator().formatName();
+            contentEncoding = (String) stringSchema.getUnprocessedProperties().get("contentEncoding");
+            requiresInteger = null;
+            log.trace("jsonSchema = '{}' format = '{}'", jsonSchema, format);
+        } else if (jsonSchema instanceof NumberSchema) {
+            NumberSchema numberSchema = (NumberSchema) jsonSchema;
+            requiresInteger = numberSchema.requiresInteger();
+            format = null;
+            contentEncoding = null;
+        } else {
+            format = null;
+            requiresInteger = null;
+            contentEncoding = null;
+        }
 
-  public static Builder from(Class<? extends org.everit.json.schema.Schema> schemaClass) {
-    return new Builder().schemaClass(schemaClass);
-  }
+        return new FromJsonConversionKey(jsonSchema.getClass(), format, requiresInteger, contentEncoding);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    FromJsonConversionKey that = (FromJsonConversionKey) o;
-    return Objects.equal(schemaClass, that.schemaClass) &&
-        Objects.equal(format, that.format) &&
-        Objects.equal(requiresInteger, that.requiresInteger) &&
-        Objects.equal(contentEncoding, that.contentEncoding);
-  }
+    public static Builder from(Class<? extends org.everit.json.schema.Schema> schemaClass) {
+        return new Builder().schemaClass(schemaClass);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(schemaClass, format, requiresInteger, contentEncoding);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FromJsonConversionKey that = (FromJsonConversionKey) o;
+        return Objects.equal(schemaClass, that.schemaClass) &&
+                Objects.equal(format, that.format) &&
+                Objects.equal(requiresInteger, that.requiresInteger) &&
+                Objects.equal(contentEncoding, that.contentEncoding);
+    }
 
-  //  public static ConversionKey of(Class<? extends org.everit.json.schema.Schema> schemaClass) {
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(schemaClass, format, requiresInteger, contentEncoding);
+    }
+
+    //  public static ConversionKey of(Class<? extends org.everit.json.schema.Schema> schemaClass) {
 //    return new ConversionKey(schemaClass, null, null, contentMediaType);
 //  }
 //
@@ -94,47 +94,48 @@ class FromJsonConversionKey {
 //    return new ConversionKey(schemaClass, null, requiesInteger, contentMediaType);
 //  }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("schemaClass", schemaClass)
-        .add("format", format)
-        .add("requiresInteger", requiresInteger)
-        .add("contentEncoding", contentEncoding)
-        .toString();
-  }
-
-  static class Builder {
-    Class<? extends org.everit.json.schema.Schema> schemaClass;
-    String format;
-    Boolean requiresInteger;
-    String contentEncoding;
-    private Builder() {
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("schemaClass", schemaClass)
+                .add("format", format)
+                .add("requiresInteger", requiresInteger)
+                .add("contentEncoding", contentEncoding)
+                .toString();
     }
 
-    public Builder schemaClass(Class<? extends Schema> schemaClass) {
-      this.schemaClass = schemaClass;
-      return this;
-    }
+    static class Builder {
+        Class<? extends org.everit.json.schema.Schema> schemaClass;
+        String format;
+        Boolean requiresInteger;
+        String contentEncoding;
 
-    public Builder format(String format) {
-      this.format = format;
-      return this;
-    }
+        private Builder() {
+        }
 
-    public Builder requiresInteger(Boolean requiresInteger) {
-      this.requiresInteger = requiresInteger;
-      return this;
-    }
+        public Builder schemaClass(Class<? extends Schema> schemaClass) {
+            this.schemaClass = schemaClass;
+            return this;
+        }
 
-    public Builder contentEncoding(String contentMediaType) {
-      this.contentEncoding = contentMediaType;
-      return this;
-    }
+        public Builder format(String format) {
+            this.format = format;
+            return this;
+        }
 
-    public FromJsonConversionKey build() {
-      return new FromJsonConversionKey(this.schemaClass, this.format, this.requiresInteger, this.contentEncoding);
+        public Builder requiresInteger(Boolean requiresInteger) {
+            this.requiresInteger = requiresInteger;
+            return this;
+        }
+
+        public Builder contentEncoding(String contentMediaType) {
+            this.contentEncoding = contentMediaType;
+            return this;
+        }
+
+        public FromJsonConversionKey build() {
+            return new FromJsonConversionKey(this.schemaClass, this.format, this.requiresInteger, this.contentEncoding);
+        }
     }
-  }
 
 }

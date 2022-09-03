@@ -1,12 +1,12 @@
 /**
  * Copyright © 2020 Jeremy Custenborder (jcustenborder@gmail.com)
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,61 +21,61 @@ import org.apache.kafka.connect.data.Decimal;
 import org.apache.kafka.connect.data.Schema;
 
 public class FromConnectConversionKey {
-  public final Schema.Type type;
-  public final String schemaName;
-  public final Integer scale;
+    public final Schema.Type type;
+    public final String schemaName;
+    public final Integer scale;
 
-  private FromConnectConversionKey(Schema.Type type, String schemaName, Integer scale) {
-    this.type = type;
-    this.schemaName = schemaName;
-    this.scale = scale;
-  }
-
-  public static FromConnectConversionKey of(Schema schema) {
-    Integer scale;
-    if (Decimal.LOGICAL_NAME.equals(schema.name())) {
-      String scaleText = schema.parameters().get(Decimal.SCALE_FIELD);
-      scale = Integer.parseInt(scaleText);
-    } else {
-      scale = null;
+    private FromConnectConversionKey(Schema.Type type, String schemaName, Integer scale) {
+        this.type = type;
+        this.schemaName = schemaName;
+        this.scale = scale;
     }
-    return of(schema.type(), schema.name(), scale);
-  }
 
-  public static FromConnectConversionKey of(Schema.Type type) {
-    return new FromConnectConversionKey(type, null, null);
-  }
+    public static FromConnectConversionKey of(Schema schema) {
+        Integer scale;
+        if (Decimal.LOGICAL_NAME.equals(schema.name())) {
+            String scaleText = schema.parameters().get(Decimal.SCALE_FIELD);
+            scale = Integer.parseInt(scaleText);
+        } else {
+            scale = null;
+        }
+        return of(schema.type(), schema.name(), scale);
+    }
 
-  public static FromConnectConversionKey of(Schema.Type type, String schemaName) {
-    return new FromConnectConversionKey(type, schemaName, null);
-  }
+    public static FromConnectConversionKey of(Schema.Type type) {
+        return new FromConnectConversionKey(type, null, null);
+    }
 
-  public static FromConnectConversionKey of(Schema.Type type, String schemaName, Integer scale) {
-    return new FromConnectConversionKey(type, schemaName, scale);
-  }
+    public static FromConnectConversionKey of(Schema.Type type, String schemaName) {
+        return new FromConnectConversionKey(type, schemaName, null);
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    FromConnectConversionKey that = (FromConnectConversionKey) o;
-    return type == that.type &&
-        Objects.equal(schemaName, that.schemaName) &&
-        Objects.equal(scale, that.scale);
-  }
+    public static FromConnectConversionKey of(Schema.Type type, String schemaName, Integer scale) {
+        return new FromConnectConversionKey(type, schemaName, scale);
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(type, schemaName, scale);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FromConnectConversionKey that = (FromConnectConversionKey) o;
+        return type == that.type &&
+                Objects.equal(schemaName, that.schemaName) &&
+                Objects.equal(scale, that.scale);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .omitNullValues()
-        .add("type", type)
-        .add("schemaName", schemaName)
-        .add("scale", scale)
-        .toString();
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(type, schemaName, scale);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("type", type)
+                .add("schemaName", schemaName)
+                .add("scale", scale)
+                .toString();
+    }
 }

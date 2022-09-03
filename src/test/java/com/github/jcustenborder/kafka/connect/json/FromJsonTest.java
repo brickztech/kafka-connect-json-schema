@@ -26,99 +26,99 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FromJsonTest {
-  private static final Logger log = LoggerFactory.getLogger(FromJsonTest.class);
-  FromJson<SinkRecord> transform;
+    private static final Logger log = LoggerFactory.getLogger(FromJsonTest.class);
+    FromJson<SinkRecord> transform;
 
-  @BeforeEach
-  public void beforeEach() {
-    this.transform = new FromJson.Value<>();
-  }
+    @BeforeEach
+    public void beforeEach() {
+        this.transform = new FromJson.Value<>();
+    }
 
-  @Test
-  public void basic() throws IOException {
-    byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
-        "basic.data.json"
-    ));
-    File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/basic.schema.json");
-    Map<String, String> settings = ImmutableMap.of(
-        JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString()
-    );
-    this.transform.configure(settings);
-    SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
-    SinkRecord transformedRecord = this.transform.apply(inputRecord);
-    assertNotNull(transformedRecord);
-    assertNotNull(transformedRecord.value());
-    assertTrue(transformedRecord.value() instanceof Struct);
-    Struct actual = (Struct) transformedRecord.value();
-    log.info("actual = '{}'", actual);
-  }
+    @Test
+    public void basic() throws IOException {
+        byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
+                "basic.data.json"
+        ));
+        File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/basic.schema.json");
+        Map<String, String> settings = ImmutableMap.of(
+                JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString()
+        );
+        this.transform.configure(settings);
+        SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
+        SinkRecord transformedRecord = this.transform.apply(inputRecord);
+        assertNotNull(transformedRecord);
+        assertNotNull(transformedRecord.value());
+        assertTrue(transformedRecord.value() instanceof Struct);
+        Struct actual = (Struct) transformedRecord.value();
+        log.info("actual = '{}'", actual);
+    }
 
-  @Test
-  public void customdate() throws IOException {
-    byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
-        "customdate.data.json"
-    ));
-    File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/customdate.schema.json");
-    Map<String, String> settings = ImmutableMap.of(
-        JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString()
-    );
-    this.transform.configure(settings);
-    SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
-    SinkRecord transformedRecord = this.transform.apply(inputRecord);
-    assertNotNull(transformedRecord);
-    assertNotNull(transformedRecord.value());
-    assertTrue(transformedRecord.value() instanceof Struct);
-    Struct actual = (Struct) transformedRecord.value();
-    log.info("actual = '{}'", actual);
-  }
+    @Test
+    public void customdate() throws IOException {
+        byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
+                "customdate.data.json"
+        ));
+        File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/customdate.schema.json");
+        Map<String, String> settings = ImmutableMap.of(
+                JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString()
+        );
+        this.transform.configure(settings);
+        SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
+        SinkRecord transformedRecord = this.transform.apply(inputRecord);
+        assertNotNull(transformedRecord);
+        assertNotNull(transformedRecord.value());
+        assertTrue(transformedRecord.value() instanceof Struct);
+        Struct actual = (Struct) transformedRecord.value();
+        log.info("actual = '{}'", actual);
+    }
 
-  @Test
-  public void validate() throws IOException {
-    byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
-        "invoice.data.json"
-    ));
-    File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices.json");
-    File connectSchemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices_connect.json");
-    Map<String, String> settings = ImmutableMap.of(
-        JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
-        JsonConfig.CONNECT_SCHEMA_URL_CONF, connectSchemaFile.toURI().toString(),
-        JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true"
-    );
-    this.transform.configure(settings);
-    SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
-    SinkRecord transformedRecord = this.transform.apply(inputRecord);
+    @Test
+    public void validate() throws IOException {
+        byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
+                "invoice.data.json"
+        ));
+        File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices.json");
+        File connectSchemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices_connect.json");
+        Map<String, String> settings = ImmutableMap.of(
+                JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
+                JsonConfig.CONNECT_SCHEMA_URL_CONF, connectSchemaFile.toURI().toString(),
+                JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true"
+        );
+        this.transform.configure(settings);
+        SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
+        SinkRecord transformedRecord = this.transform.apply(inputRecord);
 
 //    DataException exception = assertThrows(DataException.class, () -> {
 //      SinkRecord transformedRecord = this.transform.apply(inputRecord);
 //    });
 //    assertTrue(exception.getMessage().contains("required key [latitude] not found"));
 //    assertTrue(exception.getMessage().contains("required key [longitude] not found"));
-  }
+    }
 
 
-  @Test
-  public void wikiMediaRecentChange() throws IOException {
-    byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
-        "wikimedia.recentchange.data.json"
-    ));
-    File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/wikimedia.recentchange.schema.json");
-    Map<String, String> settings = ImmutableMap.of(
-        JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
-        JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true",
-        JsonConfig.EXCLUDE_LOCATIONS_CONF, "#/properties/log_params"
-    );
-    this.transform.configure(settings);
-    SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
-    assertNotNull(inputRecord);
-  }
+    @Test
+    public void wikiMediaRecentChange() throws IOException {
+        byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
+                "wikimedia.recentchange.data.json"
+        ));
+        File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/wikimedia.recentchange.schema.json");
+        Map<String, String> settings = ImmutableMap.of(
+                JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
+                JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true",
+                JsonConfig.EXCLUDE_LOCATIONS_CONF, "#/properties/log_params"
+        );
+        this.transform.configure(settings);
+        SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
+        assertNotNull(inputRecord);
+    }
 
-  @Test
-  public void foo() {
-    String timestamp = "2020-01-07 04:47:05.0000000";
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS")
-        .withZone(ZoneId.of("UTC"));
-    log.info(dateFormat.format(LocalDateTime.now()));
-    ZonedDateTime dateTime = ZonedDateTime.parse(timestamp, dateFormat);
-  }
+    @Test
+    public void foo() {
+        String timestamp = "2020-01-07 04:47:05.0000000";
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS")
+                .withZone(ZoneId.of("UTC"));
+        log.info(dateFormat.format(LocalDateTime.now()));
+        ZonedDateTime dateTime = ZonedDateTime.parse(timestamp, dateFormat);
+    }
 
 }
