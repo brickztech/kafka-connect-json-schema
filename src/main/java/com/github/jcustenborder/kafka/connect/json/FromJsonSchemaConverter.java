@@ -34,12 +34,14 @@ import org.everit.json.schema.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public abstract class FromJsonSchemaConverter<T extends org.everit.json.schema.Schema, J extends JsonNode, V> {
     private static final Logger log = LoggerFactory.getLogger(FromJsonSchemaConverter.class);
+
     protected final FromJsonSchemaConverterFactory factory;
     protected final JsonConfig config;
 
@@ -113,31 +115,68 @@ public abstract class FromJsonSchemaConverter<T extends org.everit.json.schema.S
                     .stream()
                     .filter(e -> {
                         boolean result = !EXCLUDE_PROPERTIES.contains(e.getKey());
-                        log.trace("fromJson() - filtering '{}' result = '{}'", e.getKey(), result);
                         return result;
                     })
                     .filter(e -> {
                         String schemaLocation = e.getValue().getSchemaLocation();
                         boolean result = !this.config.excludeLocations.contains(schemaLocation);
-                        log.trace("fromJson() - filtering '{}' location='{}' result = '{}'", e.getKey(), e.getValue().getSchemaLocation(), result);
                         return result;
                     })
                     .sorted(Map.Entry.comparingByKey())
                     .forEach(e -> {
                         final String propertyName = e.getKey();
-                        final org.everit.json.schema.Schema propertyJsonSchema = e.getValue();
-                        boolean isOptional;
-                        if (propertyJsonSchema instanceof CombinedSchema) {
-                            CombinedSchema types = (CombinedSchema) propertyJsonSchema;
-                            isOptional = types.getSubschemas().stream().anyMatch(NullSchema.class::isInstance);
-                        } else {
-                            isOptional = !requiredProperties.contains(propertyName);
-                        }
+                        org.everit.json.schema.Schema propertyJsonSchema = getPropertyJsonSchema(e.getValue());
+                        final boolean isOptional = getOptional(propertyName, propertyJsonSchema, requiredProperties);
                         log.trace("fromJson() - Processing property '{}' '{}'", propertyName, propertyJsonSchema);
                         FromJsonState state = this.factory.fromJSON(propertyJsonSchema, isOptional);
                         builder.field(propertyName, state.schema);
                         visitors.put(propertyName, state.visitor);
                     });
+        }
+
+        private org.everit.json.schema.Schema getPropertyJsonSchema(org.everit.json.schema.Schema schema) {
+            if (!config.numberToText) {
+                return schema;
+            }
+            if (schema instanceof CombinedSchema) {
+                CombinedSchema cs = (CombinedSchema) schema;
+                if (cs.getSubschemas().stream().anyMatch(this::isNumberField)) {
+                    List<org.everit.json.schema.Schema> subSchemas = new ArrayList<>();
+                    for (org.everit.json.schema.Schema subSchema: cs.getSubschemas()) {
+                        if (isNumberField(subSchema)) {
+                            NumberSchema ns = (NumberSchema) subSchema;
+                            int fixed = String.valueOf(ns.getMaximum()).length();
+                            int fraction = String.valueOf(ns.getMultipleOf()).length();
+                            subSchemas.add(StringSchema.builder().maxLength(fixed + fraction - 2).build());
+                        } else {
+                            subSchemas.add(subSchema);
+                        }
+                    }
+                    return CombinedSchema.builder()
+                            .criterion(cs.getCriterion())
+                            .subschemas(subSchemas)
+                            .build();
+                }
+            } else if (isNumberField(schema)) {
+                return StringSchema.builder().build();
+            }
+            return schema;
+        }
+
+        private boolean isNumberField(org.everit.json.schema.Schema fieldSchema) {
+            if (fieldSchema instanceof NumberSchema) {
+                NumberSchema schema = (NumberSchema) fieldSchema;
+                return schema.getMultipleOf() instanceof Double || schema.getMaximum() instanceof Double;
+            }
+            return false;
+        }
+
+        private boolean getOptional(String propertyName, org.everit.json.schema.Schema propertyJsonSchema, Set<String> requiredProperties) {
+            if (propertyJsonSchema instanceof CombinedSchema) {
+                CombinedSchema types = (CombinedSchema) propertyJsonSchema;
+                return types.getSubschemas().stream().anyMatch(NullSchema.class::isInstance);
+            }
+            return !requiredProperties.contains(propertyName);
         }
     }
 

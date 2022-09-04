@@ -30,9 +30,6 @@ import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.errors.DataException;
-import org.everit.json.schema.CombinedSchema;
-import org.everit.json.schema.NumberSchema;
-import org.everit.json.schema.ObjectSchema;
 import org.everit.json.schema.ValidationException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -48,7 +45,7 @@ import java.util.*;
         "most likely going to use the ByteArrayConverter or the StringConverter.")
 public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransformation<R> {
     private static final Logger log = LoggerFactory.getLogger(FromJson.class);
-    private List<String> numberFields = new ArrayList<>();
+
     FromJsonConfig config;
 
     protected FromJson(boolean isKey) {
@@ -66,8 +63,7 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
     }
 
     SchemaAndValue processJsonNode(R record, Schema inputSchema, JsonNode node) {
-        node = trimAndTransformTextNodes(transformNumberNodesToTextNodes(node));
-        Object result = this.fromJsonState.visitor.visit(node);
+        Object result = this.fromJsonState.visitor.visit(trimAndNullifyTextNodes(node));
         return new SchemaAndValue(this.fromJsonState.schema, result);
     }
 
@@ -87,10 +83,7 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
                 builder.append("\n");
                 builder.append(message.getMessage());
             }
-            throw new DataException(
-                    builder.toString(),
-                    ex
-            );
+            throw new DataException(builder.toString(), ex);
         }
     }
 
@@ -110,20 +103,7 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
         }
     }
 
-    private JsonNode transformNumberNodesToTextNodes(JsonNode node) {
-        if (numberFields.isEmpty()) {
-            return node;
-        }
-
-        ObjectNode transformed = node.deepCopy();
-        numberFields.stream().forEach(fieldName -> {
-            TextNode tn = new TextNode(transformed.get(fieldName).asText());
-            transformed.replace(fieldName, tn);
-        });
-        return transformed;
-    }
-
-    private JsonNode trimAndTransformTextNodes(JsonNode node) {
+    private JsonNode trimAndNullifyTextNodes(JsonNode node) {
         ObjectNode transformed = node.deepCopy();
         Iterator<Map.Entry<String, JsonNode>> fields = transformed.fields();
         while (fields.hasNext()) {
@@ -166,17 +146,10 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
         this.fromJsonSchemaConverterFactory = new FromJsonSchemaConverterFactory(config);
 
         org.everit.json.schema.Schema schema;
-        Optional<org.everit.json.schema.Schema> connectSchema = Optional.empty();
         if (JsonConfig.SchemaLocation.Url == this.config.schemaLocation) {
             try {
                 try (InputStream inputStream = this.config.schemaUrl.openStream()) {
                     schema = Utils.loadSchema(inputStream);
-                }
-                File file = new File(this.config.connectSchemaUrl.getFile());
-                if (file.exists()) {
-                    try (InputStream inputStream = this.config.connectSchemaUrl.openStream()) {
-                        connectSchema = Optional.of(Utils.loadSchema(inputStream));
-                    }
                 }
             } catch (IOException e) {
                 ConfigException exception = new ConfigException(JsonConfig.SCHEMA_URL_CONF, this.config.schemaUrl, "exception while loading schema");
@@ -194,30 +167,7 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
         }
 
         this.fromJsonState = this.fromJsonSchemaConverterFactory.fromJSON(schema);
-        connectSchema.ifPresent(this::loadConnectSchema);
-
         this.objectMapper = JacksonFactory.create();
-    }
-
-    private void loadConnectSchema(org.everit.json.schema.Schema schema) {
-        org.everit.json.schema.Schema validationSchema = this.fromJsonState.jsonSchema;
-        ((ObjectSchema) validationSchema).getPropertySchemas().forEach((fieldName, ps) -> {
-            if (ps instanceof CombinedSchema) {
-                CombinedSchema cs = (CombinedSchema) ps;
-                cs.getSubschemas().stream().filter(NumberSchema.class::isInstance).map(NumberSchema.class::cast).filter(this::isNumberField).forEach(ns -> {
-                    numberFields.add(fieldName);
-                });
-            } else if (ps instanceof NumberSchema && isNumberField((NumberSchema) ps)) {
-                numberFields.add(fieldName);
-            }
-        });
-
-        this.fromJsonState = this.fromJsonSchemaConverterFactory.fromJSON(schema);
-        this.fromJsonState.jsonSchema = validationSchema;
-    }
-
-    private boolean isNumberField(NumberSchema schema) {
-        return schema.getMultipleOf() instanceof Double || schema.getMaximum() instanceof Double;
     }
 
     public static class Key<R extends ConnectRecord<R>> extends FromJson<R> {

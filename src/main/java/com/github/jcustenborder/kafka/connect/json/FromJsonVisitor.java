@@ -98,6 +98,9 @@ public abstract class FromJsonVisitor<T extends JsonNode, V> {
             visitors.forEach((fieldName, visitor) -> {
                 try {
                     JsonNode rawValue = node.get(fieldName);
+                    if (result.schema().field(fieldName).schema().type().equals(Schema.Type.STRING) && !(rawValue instanceof TextNode)) {
+                        rawValue = new TextNode(rawValue.asText());
+                    }
                     Object convertedValue = visitor.visit(rawValue);
                     result.put(fieldName, convertedValue);
                 } catch (Exception ex) {

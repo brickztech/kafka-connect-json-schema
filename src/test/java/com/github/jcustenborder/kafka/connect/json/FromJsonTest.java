@@ -6,7 +6,6 @@ import com.google.common.io.ByteStreams;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.data.Struct;
-import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,25 +73,24 @@ public class FromJsonTest {
 
     @Test
     public void validate() throws IOException {
-        byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream(
-                "invoice.data.json"
-        ));
+        byte[] input = ByteStreams.toByteArray(this.getClass().getResourceAsStream("invoice.data.json"));
         File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices.json");
-        File connectSchemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszinvoices_connect.json");
         Map<String, String> settings = ImmutableMap.of(
                 JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
-                JsonConfig.CONNECT_SCHEMA_URL_CONF, connectSchemaFile.toURI().toString(),
-                JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true"
+                JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true",
+                JsonConfig.NUMBER_TO_TEXT_ENABLED_CONF, "true"
         );
         this.transform.configure(settings);
         SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));
         SinkRecord transformedRecord = this.transform.apply(inputRecord);
-
-//    DataException exception = assertThrows(DataException.class, () -> {
-//      SinkRecord transformedRecord = this.transform.apply(inputRecord);
-//    });
-//    assertTrue(exception.getMessage().contains("required key [latitude] not found"));
-//    assertTrue(exception.getMessage().contains("required key [longitude] not found"));
+        assertTrue(transformedRecord.valueSchema().field("inv_actual_balance").schema().isOptional());
+        assertTrue(transformedRecord.valueSchema().field("inv_net_amount").schema().type().equals(Schema.Type.STRING));
+        assertTrue(transformedRecord.valueSchema().field("tsz_invoice_nr").schema().type().equals(Schema.Type.STRING));
+        Struct transformedValue = (Struct) transformedRecord.value();
+        String invZip = transformedValue.getString("inv_zip");
+        assertTrue(invZip.length() == invZip.trim().length());
+        assertTrue(transformedValue.getString("inv_tax_nr") == "null");
+        assertTrue(transformedValue.getString("inv_bank_account_nr") == "null");
     }
 
 

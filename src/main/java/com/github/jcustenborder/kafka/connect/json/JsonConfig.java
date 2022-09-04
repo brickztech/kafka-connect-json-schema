@@ -34,13 +34,9 @@ class JsonConfig extends AbstractConfig {
     public static final String SCHEMA_LOCATION_CONF = "json.schema.location";
     public static final String VALIDATE_JSON_ENABLED_CONF = "json.schema.validation.enabled";
     public static final String EXCLUDE_LOCATIONS_CONF = "json.exclude.locations";
-    public static final String CONNECT_SCHEMA_URL_CONF = "connect.schema.url";
+    public static final String NUMBER_TO_TEXT_ENABLED_CONF = "json.schema.numberToText.enabled";
 
     static final String SCHEMA_URL_DOC = "Url to retrieve the schema from. Urls can be anything that is " +
-            "supported by URL.openStream(). For example the local filesystem file:///schemas/something.json. " +
-            "A web address https://www.schemas.com/something.json";
-
-    static final String CONNECT_SCHEMA_URL_DOC = "Url to retrieve the schema for Kafka Connect. Urls can be anything that is " +
             "supported by URL.openStream(). For example the local filesystem file:///schemas/something.json. " +
             "A web address https://www.schemas.com/something.json";
 
@@ -52,6 +48,9 @@ class JsonConfig extends AbstractConfig {
     static final String EXCLUDE_LOCATIONS_DOC = "Location(s) in the schema to exclude. This is primarily " +
             "because connect cannot support those locations. For example types that would require a union type.";
 
+    static final String NUMBER_TO_TEXT_ENABLED_DOC = "Transform number nodes to text nodes. This is primarily " +
+            "because Avro doesn't have fixed point data types.";
+
     public JsonConfig(ConfigDef definition, Map<?, ?> originals) {
         super(definition, originals);
         this.schemaUrl = ConfigUtils.url(this, SCHEMA_URL_CONF);
@@ -59,7 +58,7 @@ class JsonConfig extends AbstractConfig {
         this.schemaText = getString(SCHEMA_INLINE_CONF);
         this.validateJson = getBoolean(VALIDATE_JSON_ENABLED_CONF);
         this.excludeLocations = ConfigUtils.getSet(this, EXCLUDE_LOCATIONS_CONF);
-        this.connectSchemaUrl = ConfigUtils.url(this, CONNECT_SCHEMA_URL_CONF);
+        this.numberToText = getBoolean(NUMBER_TO_TEXT_ENABLED_CONF);
     }
 
 
@@ -75,7 +74,7 @@ class JsonConfig extends AbstractConfig {
     public final String schemaText;
     public final boolean validateJson;
     public final Set<String> excludeLocations;
-    public final URL connectSchemaUrl;
+    public final boolean numberToText;
 
     public static ConfigDef config() {
         return new ConfigDef().define(
@@ -113,13 +112,11 @@ class JsonConfig extends AbstractConfig {
                         .defaultValue(Collections.EMPTY_LIST)
                         .importance(ConfigDef.Importance.LOW)
                         .build()
-        ).define(
-                ConfigKeyBuilder.of(CONNECT_SCHEMA_URL_CONF, ConfigDef.Type.STRING)
-                        .documentation(CONNECT_SCHEMA_URL_DOC)
-                        .validator(Validators.validUrl())
-                        .importance(ConfigDef.Importance.HIGH)
-                        .recommender(Recommenders.visibleIf(SCHEMA_LOCATION_CONF, SchemaLocation.Url.toString()))
-                        .defaultValue("File:///doesNotExist")
+        ).define (
+                ConfigKeyBuilder.of(NUMBER_TO_TEXT_ENABLED_CONF, ConfigDef.Type.BOOLEAN)
+                        .documentation(NUMBER_TO_TEXT_ENABLED_DOC)
+                        .importance(ConfigDef.Importance.MEDIUM)
+                        .defaultValue(false)
                         .build()
         );
     }

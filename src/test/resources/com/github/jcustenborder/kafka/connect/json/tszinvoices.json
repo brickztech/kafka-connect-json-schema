@@ -98,7 +98,7 @@
         },
         "inv_net_amount": {
             "type": ["null", "number"],
-            "maximum": 1000000000000000,
+            "maximum": 100000000000,
             "exclusiveMaximum": true,
             "multipleOf": 0.0001
         },
