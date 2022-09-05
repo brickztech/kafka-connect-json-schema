@@ -20,6 +20,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -88,9 +91,9 @@ public class FromJsonTest {
         assertTrue(transformedRecord.valueSchema().field("tsz_invoice_nr").schema().type().equals(Schema.Type.STRING));
         Struct transformedValue = (Struct) transformedRecord.value();
         String invZip = transformedValue.getString("inv_zip");
-        assertTrue(invZip.length() == invZip.trim().length());
-        assertTrue(transformedValue.getString("inv_tax_nr") == "null");
-        assertTrue(transformedValue.getString("inv_bank_account_nr") == "null");
+        assertThat(invZip.length(), is(invZip.trim().length()));
+        assertThat(transformedValue.getString("inv_tax_nr"), is(nullValue()));
+        assertThat(transformedValue.getString("inv_bank_account_nr"), is(nullValue()));
     }
 
 

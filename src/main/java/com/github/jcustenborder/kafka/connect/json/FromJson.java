@@ -29,6 +29,7 @@ import org.apache.kafka.common.config.ConfigException;
 import org.apache.kafka.connect.connector.ConnectRecord;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
+import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.errors.DataException;
 import org.everit.json.schema.ValidationException;
 import org.json.JSONObject;
@@ -63,8 +64,25 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
     }
 
     SchemaAndValue processJsonNode(R record, Schema inputSchema, JsonNode node) {
-        Object result = this.fromJsonState.visitor.visit(trimAndNullifyTextNodes(node));
+        Object result = trimAndNullifyTextFields(this.fromJsonState.visitor.visit(node));
         return new SchemaAndValue(this.fromJsonState.schema, result);
+    }
+
+    private Object trimAndNullifyTextFields(Object value) {
+        if (value instanceof Struct && config.trimAndNullifyText) {
+            Struct transformed = (Struct) value;
+            transformed.schema().fields().stream().filter(sf -> sf.schema().type().equals(Schema.Type.STRING)).forEach(field -> {
+                String fieldName = field.name();
+                String fieldValue = transformed.getString(fieldName).trim();
+                if (fieldValue.length() == 0 || fieldValue == "null") {
+                    transformed.put(fieldName, null);
+                } else {
+                    transformed.put(fieldName, fieldValue);
+                }
+            });
+            return transformed;
+        }
+        return value;
     }
 
     void validateJson(JSONObject jsonObject) {
@@ -101,23 +119,6 @@ public class FromJson<R extends ConnectRecord<R>> extends BaseKeyValueTransforma
         } catch (IOException e) {
             throw new DataException(e);
         }
-    }
-
-    private JsonNode trimAndNullifyTextNodes(JsonNode node) {
-        ObjectNode transformed = node.deepCopy();
-        Iterator<Map.Entry<String, JsonNode>> fields = transformed.fields();
-        while (fields.hasNext()) {
-            Map.Entry<String, JsonNode> entry = fields.next();
-            if (entry.getValue() instanceof TextNode) {
-                String nodeText = ((TextNode) entry.getValue()).asText().trim();
-                if (nodeText.length() == 0 || nodeText == "null") {
-                    transformed.replace(entry.getKey(), NullNode.getInstance());
-                } else {
-                    transformed.replace(entry.getKey(), new TextNode(nodeText));
-                }
-            }
-        }
-        return transformed;
     }
 
     @Override

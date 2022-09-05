@@ -35,6 +35,7 @@ class JsonConfig extends AbstractConfig {
     public static final String VALIDATE_JSON_ENABLED_CONF = "json.schema.validation.enabled";
     public static final String EXCLUDE_LOCATIONS_CONF = "json.exclude.locations";
     public static final String NUMBER_TO_TEXT_ENABLED_CONF = "json.schema.numberToText.enabled";
+    public static final String TRIM_AND_NULLIFY_TEXT_ENABLED_CONF = "json.schema.trimAndNullifyText.enabled";
 
     static final String SCHEMA_URL_DOC = "Url to retrieve the schema from. Urls can be anything that is " +
             "supported by URL.openStream(). For example the local filesystem file:///schemas/something.json. " +
@@ -51,6 +52,8 @@ class JsonConfig extends AbstractConfig {
     static final String NUMBER_TO_TEXT_ENABLED_DOC = "Transform number nodes to text nodes. This is primarily " +
             "because Avro doesn't have fixed point data types.";
 
+    static final String TRIM_AND_NULLIFY_TEXT_ENABLED_DOC = "Trim text nodes and replace empty and \"null\" string to null.";
+
     public JsonConfig(ConfigDef definition, Map<?, ?> originals) {
         super(definition, originals);
         this.schemaUrl = ConfigUtils.url(this, SCHEMA_URL_CONF);
@@ -59,6 +62,7 @@ class JsonConfig extends AbstractConfig {
         this.validateJson = getBoolean(VALIDATE_JSON_ENABLED_CONF);
         this.excludeLocations = ConfigUtils.getSet(this, EXCLUDE_LOCATIONS_CONF);
         this.numberToText = getBoolean(NUMBER_TO_TEXT_ENABLED_CONF);
+        this.trimAndNullifyText = getBoolean(TRIM_AND_NULLIFY_TEXT_ENABLED_CONF);
     }
 
 
@@ -75,6 +79,7 @@ class JsonConfig extends AbstractConfig {
     public final boolean validateJson;
     public final Set<String> excludeLocations;
     public final boolean numberToText;
+    public final boolean trimAndNullifyText;
 
     public static ConfigDef config() {
         return new ConfigDef().define(
@@ -115,6 +120,12 @@ class JsonConfig extends AbstractConfig {
         ).define (
                 ConfigKeyBuilder.of(NUMBER_TO_TEXT_ENABLED_CONF, ConfigDef.Type.BOOLEAN)
                         .documentation(NUMBER_TO_TEXT_ENABLED_DOC)
+                        .importance(ConfigDef.Importance.MEDIUM)
+                        .defaultValue(false)
+                        .build()
+        ).define(
+                ConfigKeyBuilder.of(TRIM_AND_NULLIFY_TEXT_ENABLED_CONF, ConfigDef.Type.BOOLEAN)
+                        .documentation(TRIM_AND_NULLIFY_TEXT_ENABLED_DOC)
                         .importance(ConfigDef.Importance.MEDIUM)
                         .defaultValue(false)
                         .build()
