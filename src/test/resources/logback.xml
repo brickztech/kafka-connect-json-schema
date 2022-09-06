@@ -5,6 +5,7 @@
         </encoder>
     </appender>
     <logger name="com.github.jcustenborder.kafka.connect.json" level="INFO"/>
+    <logger name="com.brickztech.nhkv.kafka.connect" level="TRACE"/>
     <logger name="org.reflections" level="ERROR"/>
     <root level="INFO">
         <appender-ref ref="STDOUT" />

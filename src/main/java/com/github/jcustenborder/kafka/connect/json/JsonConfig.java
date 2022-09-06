@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-class JsonConfig extends AbstractConfig {
+public class JsonConfig extends AbstractConfig {
     public static final String SCHEMA_URL_CONF = "json.schema.url";
     public static final String SCHEMA_INLINE_CONF = "json.schema.inline";
     public static final String SCHEMA_LOCATION_CONF = "json.schema.location";

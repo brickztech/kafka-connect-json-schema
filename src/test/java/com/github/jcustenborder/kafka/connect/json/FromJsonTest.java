@@ -81,7 +81,8 @@ public class FromJsonTest {
         Map<String, String> settings = ImmutableMap.of(
                 JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
                 JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true",
-                JsonConfig.NUMBER_TO_TEXT_ENABLED_CONF, "true"
+                JsonConfig.NUMBER_TO_TEXT_ENABLED_CONF, "true",
+                JsonConfig.TRIM_AND_NULLIFY_TEXT_ENABLED_CONF, "true"
         );
         this.transform.configure(settings);
         SinkRecord inputRecord = SinkRecordHelper.write("foo", new SchemaAndValue(Schema.STRING_SCHEMA, "foo"), new SchemaAndValue(Schema.BYTES_SCHEMA, input));

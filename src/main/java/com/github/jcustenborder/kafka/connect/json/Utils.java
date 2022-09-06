@@ -17,6 +17,7 @@ package com.github.jcustenborder.kafka.connect.json;
 
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.connect.data.Decimal;
+import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.errors.DataException;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.StringSchema;
@@ -34,6 +35,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 public class Utils {
 
@@ -110,5 +112,23 @@ public class Utils {
         }
     }
 
+    public static Struct requireStruct(Object value, String purpose) {
+        if (!(value instanceof Struct)) {
+            throw new DataException("Only Struct objects supported for [" + purpose + "], found: " + nullSafeClassName(value));
+        }
+        return (Struct) value;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> requireMap(Object value, String purpose) {
+        if (!(value instanceof Map)) {
+            throw new DataException("Only Map objects supported in absence of schema for [" + purpose + "], found: " + nullSafeClassName(value));
+        }
+        return (Map<String, Object>) value;
+    }
+
+    private static String nullSafeClassName(Object x) {
+        return x == null ? "null" : x.getClass().getName();
+    }
 
 }
