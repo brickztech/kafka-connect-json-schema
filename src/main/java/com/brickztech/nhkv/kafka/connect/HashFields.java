@@ -23,7 +23,6 @@ import java.util.Optional;
 import static com.github.jcustenborder.kafka.connect.json.Utils.*;
 
 public class HashFields<R extends ConnectRecord<R>> implements Transformation<R> {
-    private static final Logger log = LoggerFactory.getLogger(HashFields.class);
 
     private static final String PURPOSE = "hash fields";
     private Cache<Schema, Schema> schemaUpdateCache;
@@ -51,7 +50,6 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         String hashCode = bytesToHex(digest.digest(data.toString().getBytes(StandardCharsets.UTF_8)));
         Map<String, Object> updatedValue = new HashMap<>(value);
         updatedValue.put(config.field, hashCode);
-        log.trace("{} = {}", config.field, hashCode);
         return newRecord(record, null, updatedValue);
     }
 
@@ -71,7 +69,6 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         Struct updatedValue = new Struct(updatedSchema);
         value.schema().fields().stream().forEach(field -> updatedValue.put(field.name(), value.get(field)));
         updatedValue.put(config.field, hashCode);
-        log.trace("{} = {}", config.field, hashCode);
         return newRecord(record, updatedSchema, updatedValue);
     }
 
@@ -86,7 +83,7 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (int i = 0; i < hash.length; i++) {
             String hex = Integer.toHexString(0xff & hash[i]);
-            if(hex.length() == 1) {
+            if (hex.length() == 1) {
                 hexString.append('0');
             }
             hexString.append(hex);
@@ -115,7 +112,8 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
     }
 
     private R newRecord(R record, Schema updatedSchema, Object updatedValue) {
-        return record.newRecord(record.topic(), record.kafkaPartition(), record.keySchema(), record.key(), updatedSchema, updatedValue, record.timestamp());
+        return record.newRecord(record.topic(), record.kafkaPartition(), record.keySchema(), record.key(),
+                updatedSchema, updatedValue, record.timestamp());
     }
 
 }

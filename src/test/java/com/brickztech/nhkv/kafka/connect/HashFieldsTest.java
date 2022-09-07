@@ -12,6 +12,8 @@ import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 class HashFieldsTest {
+    private static final Logger log = LoggerFactory.getLogger(HashFieldsTest.class);
 
     HashFields<SinkRecord> hashTransform;
     SinkRecord fromJsonTransformed;
@@ -52,7 +55,9 @@ class HashFieldsTest {
         hashTransform.configure(settings);
         SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
         Struct hashed = (Struct) hashedRecord.value();
+        String hashCode = hashed.getString("IntegratorIndex");
         assertThat(hashed.getString("IntegratorIndex"), is(notNullValue()));
+        log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
     }
 
     @Test
@@ -64,7 +69,9 @@ class HashFieldsTest {
         hashTransform.configure(settings);
         SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
         Struct hashed = (Struct) hashedRecord.value();
-        assertThat(hashed.getString("HashFieldName"), is(notNullValue()));
+        String hashCode = hashed.getString("HashFieldName");
+        assertThat(hashCode, is(notNullValue()));
+        log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
     }
 
 }
