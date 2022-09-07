@@ -44,9 +44,7 @@ class PhoneNumberTest {
 
     @Test
     public void testFormat() {
-        Map<String, String> settings = ImmutableMap.of(
-                PhoneNumberConfig.FIELDS_CONF, "cust_phone,service_user_phone"
-        );
+        Map<String, String> settings = ImmutableMap.of(PhoneNumberConfig.FIELDS_CONF, "cust_phone,service_user_phone");
         phoneTransform.configure(settings);
         SinkRecord alteredRecord = phoneTransform.apply(fromJsonTransformed);
         Struct altered = (Struct) alteredRecord.value();

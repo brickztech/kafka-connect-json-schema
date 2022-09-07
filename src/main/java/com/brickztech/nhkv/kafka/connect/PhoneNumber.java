@@ -58,7 +58,7 @@ public class PhoneNumber<R extends ConnectRecord<R>> implements Transformation<R
     private String formatNumber(String phoneNumber) {
         if (phoneNumber != null) {
             try {
-                String cleanedNumber = phoneNumber.replaceAll("[\\+\\_()/-]", "").replaceAll(" ", "");
+                String cleanedNumber = phoneNumber.replaceAll("[ \\+\\_()/-]", "");
                 for (Map.Entry<Pattern, Function<String, String>> entry : patterns.entrySet()) {
                     if (entry.getKey().matcher(cleanedNumber).find()) {
                         String value = entry.getValue().apply(cleanedNumber);
