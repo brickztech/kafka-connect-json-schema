@@ -1,5 +1,8 @@
 package com.brickztech.nhkv.kafka.connect;
 
+import com.github.jcustenborder.kafka.connect.utils.config.Description;
+import com.github.jcustenborder.kafka.connect.utils.config.DocumentationTip;
+import com.github.jcustenborder.kafka.connect.utils.config.Title;
 import org.apache.kafka.common.cache.Cache;
 import org.apache.kafka.common.cache.LRUCache;
 import org.apache.kafka.common.cache.SynchronizedCache;
@@ -19,6 +22,9 @@ import java.util.regex.Pattern;
 import static com.github.jcustenborder.kafka.connect.json.Utils.requireMap;
 import static com.github.jcustenborder.kafka.connect.json.Utils.requireStruct;
 
+@Title("PhoneNumber transformation")
+@Description("The PhoneNumber will format mobile and wired phone numbers into unified format.")
+@DocumentationTip("This transformation expects data to be in either Struct or Map format.")
 public class PhoneNumber<R extends ConnectRecord<R>> implements Transformation<R> {
 
     private static final String PURPOSE = "phone number formatter";

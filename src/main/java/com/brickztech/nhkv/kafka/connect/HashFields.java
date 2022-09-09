@@ -1,5 +1,8 @@
 package com.brickztech.nhkv.kafka.connect;
 
+import com.github.jcustenborder.kafka.connect.utils.config.Description;
+import com.github.jcustenborder.kafka.connect.utils.config.DocumentationTip;
+import com.github.jcustenborder.kafka.connect.utils.config.Title;
 import org.apache.kafka.common.cache.Cache;
 import org.apache.kafka.common.cache.LRUCache;
 import org.apache.kafka.common.cache.SynchronizedCache;
@@ -22,6 +25,9 @@ import java.util.Optional;
 
 import static com.github.jcustenborder.kafka.connect.json.Utils.*;
 
+@Title("Hash fields transformation")
+@Description("The HashFields will generate SHA-256 fingerprint from specified fields.")
+@DocumentationTip("This transformation expects data to be in either Struct or Map format.")
 public class HashFields<R extends ConnectRecord<R>> implements Transformation<R> {
 
     private static final String PURPOSE = "hash fields";

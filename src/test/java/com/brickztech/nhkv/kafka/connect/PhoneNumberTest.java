@@ -28,7 +28,7 @@ class PhoneNumberTest {
     @BeforeEach
     public void beforeEach() throws IOException {
         byte[] input = ByteStreams.toByteArray(FromJsonTest.class.getResourceAsStream("customer.json"));
-        File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/nhkv/tszcustomers.json");
+        File schemaFile = new File("src/test/resources/com/github/jcustenborder/kafka/connect/json/tszcustomers.json");
         Map<String, String> settings = ImmutableMap.of(
                 JsonConfig.SCHEMA_URL_CONF, schemaFile.toURI().toString(),
                 JsonConfig.VALIDATE_JSON_ENABLED_CONF, "true",
