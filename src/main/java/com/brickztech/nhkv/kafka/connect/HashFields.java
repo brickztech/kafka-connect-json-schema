@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.brickztech.nhkv.kafka.connect.Utils.bytesToHex;
 import static com.github.jcustenborder.kafka.connect.json.Utils.*;
 
 @Title("Hash fields transformation")
@@ -52,6 +53,7 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         value.keySet().stream().filter(config.from::contains).forEach(key -> {
             Optional<Object> fieldValue = Optional.ofNullable(value.get(key));
             fieldValue.ifPresent(data::append);
+            fieldValue.ifPresent(v -> data.append(key).append(':').append(v));
         });
         String hashCode = bytesToHex(digest.digest(data.toString().getBytes(StandardCharsets.UTF_8)));
         Map<String, Object> updatedValue = new HashMap<>(value);
@@ -64,7 +66,7 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         StringBuilder data = new StringBuilder();
         value.schema().fields().stream().map(Field::name).filter(config.from::contains).forEach(key -> {
             Optional<Object> fieldValue = Optional.ofNullable(value.get(key));
-            fieldValue.ifPresent(data::append);
+            fieldValue.ifPresent(v -> data.append(key).append(':').append(v));
         });
         String hashCode = bytesToHex(digest.digest(data.toString().getBytes(StandardCharsets.UTF_8)));
         Schema updatedSchema = schemaUpdateCache.get(value.schema());
@@ -83,18 +85,6 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         schema.fields().stream().forEach(field -> builder.field(field.name(), field.schema()));
         builder.field(config.field, Schema.STRING_SCHEMA);
         return builder.build();
-    }
-
-    private String bytesToHex(byte[] hash) {
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-        for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-        return hexString.toString();
     }
 
     @Override

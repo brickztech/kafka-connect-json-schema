@@ -17,10 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import static com.brickztech.nhkv.kafka.connect.Utils.bytesToHex;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 class HashFieldsTest {
@@ -72,6 +75,48 @@ class HashFieldsTest {
         String hashCode = hashed.getString("HashFieldName");
         assertThat(hashCode, is(notNullValue()));
         log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
+    }
+
+    @Test
+    public void whenAllFieldsNullThanEmptyStringHashExpected() throws NoSuchAlgorithmException {
+        Map<String, String> settings = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "HashFieldName",
+                HashFieldsConfig.FROM_CONF, "repdoc_tax_nr,repdoc_group_tax_nr,repdoc_foreign_tax_nr_eu"
+        );
+        hashTransform.configure(settings);
+        SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
+        Struct hashed = (Struct) hashedRecord.value();
+        String hashCode = hashed.getString("HashFieldName");
+        assertThat(hashCode, is(notNullValue()));
+        StringBuilder sb = new StringBuilder();
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        String emptyHash = bytesToHex(digest.digest(sb.toString().getBytes(StandardCharsets.UTF_8)));
+        assertThat(sb.toString(), is(""));
+        assertThat(hashCode, is(emptyHash));
+        log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
+    }
+
+    @Test
+    public void whenSwapedThenDiffers() {
+        Map<String, String> settings1 = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "FieldPair1",
+                HashFieldsConfig.FROM_CONF, "repdoc_invoice_name,repdoc_invoice_zip"
+        );
+        Map<String, String> settings2 = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "FieldPair2",
+                HashFieldsConfig.FROM_CONF, "repdoc_invoice_city,repdoc_invoice_address"
+        );
+        hashTransform.configure(settings1);
+        SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
+        Struct hashed = (Struct) hashedRecord.value();
+        String hashCode1 = hashed.getString("FieldPair1");
+
+        hashTransform.configure(settings2);
+        hashedRecord = hashTransform.apply(fromJsonTransformed);
+        hashed = (Struct) hashedRecord.value();
+        String hashCode2 = hashed.getString("FieldPair2");
+
+        assertThat(hashCode1, not(hashCode2));
     }
 
 }
