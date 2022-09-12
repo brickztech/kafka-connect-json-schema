@@ -54,6 +54,8 @@ class StringReplaceTest {
         Struct hashed = (Struct) hashedRecord.value();
         String cleaned = hashed.getString("batch_id");
         assertThat(cleaned, is("20220725095157861"));
+        assertThat(hashed.getString("public_service_provider_id"), is("2060"));
+        assertThat(hashed.getString("inv_date"), is("2019-10-15"));
     }
 
 }

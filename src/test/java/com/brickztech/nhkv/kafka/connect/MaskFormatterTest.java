@@ -1,5 +1,6 @@
 package com.brickztech.nhkv.kafka.connect;
 
+import org.apache.kafka.common.protocol.types.Field;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -26,6 +28,7 @@ public class MaskFormatterTest {
     private Map<String, String> FIXTURES;
     private MaskFormatter formatter7;
     private MaskFormatter formatter8;
+    private Pattern numbers = Pattern.compile("\\d+");
 
     @BeforeEach
     private void beforeEach() throws ParseException {
@@ -48,6 +51,9 @@ public class MaskFormatterTest {
         FIXTURES.put("TEL.MÁSÉ LETT", "TEL.MÁSÉ LETT");
         FIXTURES.put("NAGY IMRE FIA", "NAGY IMRE FIA");
         FIXTURES.put("MITYÓKÉ", "MITYÓKÉ");
+        FIXTURES.put("93/519-911,912", "93/519-911,912");
+        FIXTURES.put("93/519-911;912", "93/519-911;912");
+        FIXTURES.put("93/519-911.912", "93/519-911.912");
     }
 
 
@@ -59,7 +65,8 @@ public class MaskFormatterTest {
     }
 
     private String formatNumber(String phoneNumber) throws ParseException {
-        String cleanedNumber = phoneNumber.replaceAll("[ \\+\\_()/-]", "");
+//        String cleanedNumber = phoneNumber.replaceAll("[, \\+\\_()/-]", "");
+        String cleanedNumber = phoneNumber.replaceAll("\\D+", "");
         for (Map.Entry<Pattern, Function<String, String>> entry : patterns.entrySet()) {
             if (entry.getKey().matcher(cleanedNumber).find()) {
                 String value = entry.getValue().apply(cleanedNumber);
