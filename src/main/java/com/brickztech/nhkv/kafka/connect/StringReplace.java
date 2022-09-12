@@ -45,6 +45,7 @@ public class StringReplace <R extends ConnectRecord<R>> implements Transformatio
     private R applyWithSchema(R record) {
         final Struct value = requireStruct(record.value(), PURPOSE);
         Struct updatedValue = new Struct(value.schema());
+        value.schema().fields().stream().forEach(field -> updatedValue.put(field.name(), value.get(field)));
         Optional<Object> fieldValue = Optional.ofNullable(value.get(config.field));
         fieldValue.ifPresent(v -> {
             updatedValue.put(config.field, v.toString().replaceAll(config.pattern, config.replacement));
