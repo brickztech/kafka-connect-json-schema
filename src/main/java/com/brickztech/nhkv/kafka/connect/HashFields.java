@@ -50,9 +50,8 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
     private R applySchemaless(R record) {
         final Map<String, Object> value = requireMap(record.value(), PURPOSE);
         StringBuilder data = new StringBuilder();
-        value.keySet().stream().filter(config.from::contains).forEach(key -> {
+        config.from.stream().forEach(key -> {
             Optional<Object> fieldValue = Optional.ofNullable(value.get(key));
-            fieldValue.ifPresent(data::append);
             fieldValue.ifPresent(v -> data.append(key).append(':').append(v));
         });
         String hashCode = bytesToHex(digest.digest(data.toString().getBytes(StandardCharsets.UTF_8)));
@@ -64,7 +63,7 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
     private R applyWithSchema(R record) {
         final Struct value = requireStruct(record.value(), PURPOSE);
         StringBuilder data = new StringBuilder();
-        value.schema().fields().stream().map(Field::name).filter(config.from::contains).forEach(key -> {
+        config.from.stream().forEach(key -> {
             Optional<Object> fieldValue = Optional.ofNullable(value.get(key));
             fieldValue.ifPresent(v -> data.append(key).append(':').append(v));
         });

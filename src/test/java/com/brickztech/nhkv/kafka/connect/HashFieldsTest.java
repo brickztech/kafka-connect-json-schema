@@ -119,4 +119,22 @@ class HashFieldsTest {
         assertThat(hashCode1, not(hashCode2));
     }
 
+    @Test
+    public void whenFieldNameInvalidThenException() {
+        Map<String, String> settings = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "IntegratorIndex",
+                HashFieldsConfig.FROM_CONF, "public_service_int_provder_id,public_service_int_provder_name"
+        );
+        hashTransform.configure(settings);
+        try {
+            SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
+            Struct hashed = (Struct) hashedRecord.value();
+            String hashCode = hashed.getString("IntegratorIndex");
+            assertThat(hashed.getString("IntegratorIndex"), is(notNullValue()));
+            log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
+            assertThat("org.apache.kafka.connect.errors.DataException exception expected", false);
+        } catch (org.apache.kafka.connect.errors.DataException ignore) {
+        }
+    }
+
 }
