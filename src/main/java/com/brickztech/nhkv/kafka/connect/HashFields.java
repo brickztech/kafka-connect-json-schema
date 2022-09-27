@@ -74,7 +74,7 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
     private R applySchemaless(R record) {
         final Map<String, Object> value = requireMap(record.value(), PURPOSE);
         StringBuilder data = new StringBuilder();
-        value.keySet().stream().filter(config.from::contains).forEach(key -> {
+        config.from.stream().forEach(key -> {
             Optional<Object> fieldValue = Optional.ofNullable(value.get(key));
             fieldValue.ifPresent(data::append);
             fieldValue.ifPresent(v -> data.append(key).append(':').append(v));
@@ -89,7 +89,7 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         final Struct value = requireStruct(record.value(), PURPOSE);
         StringBuilder hashData = new StringBuilder();
         
-        value.schema().fields().stream().map(Field::name).filter(config.from::contains).forEach(key -> {
+        config.from.stream().forEach(key -> {
             Optional<Object> field = Optional.ofNullable(value.get(key));
             if(field.isPresent()) {
             	Object fieldValue = field.get();
