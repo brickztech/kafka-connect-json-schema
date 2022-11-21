@@ -62,7 +62,29 @@ class HashFieldsTest {
         assertThat(hashed.getString("IntegratorIndex"), is(notNullValue()));
         log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
     }
-
+    @Test
+    public void aliasFieldsEquality() {
+        Map<String, String> settings = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "Index1",
+                HashFieldsConfig.FROM_CONF, "inv_place_of_service_zip" // aliassed to zip
+        );
+        hashTransform.configure(settings);
+        SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
+        Struct hashed = (Struct) hashedRecord.value();
+        String hashCode1 = hashed.getString("Index1");
+        
+        Map<String, String> settings2 = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "Index2",
+                HashFieldsConfig.FROM_CONF, "inv_service_user_zip" // aliassed to zip
+        );
+        hashTransform.configure(settings2);
+        hashedRecord = hashTransform.apply(fromJsonTransformed);
+        hashed = (Struct) hashedRecord.value();
+        String hashCode2 = hashed.getString("Index2");
+        
+        assertThat(hashCode1, is(hashCode2));
+    }
+    
     @Test
     public void testWithNullFields() {
         Map<String, String> settings = ImmutableMap.of(
@@ -87,12 +109,7 @@ class HashFieldsTest {
         SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
         Struct hashed = (Struct) hashedRecord.value();
         String hashCode = hashed.getString("HashFieldName");
-        assertThat(hashCode, is(notNullValue()));
-        StringBuilder sb = new StringBuilder();
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        String emptyHash = bytesToHex(digest.digest(sb.toString().getBytes(StandardCharsets.UTF_8)));
-        assertThat(sb.toString(), is(""));
-        assertThat(hashCode, is(emptyHash));
+        assertThat(hashCode, is(""));
         log.info("{} = {}", settings.get(HashFieldsConfig.FIELD_CONF), hashCode);
     }
 

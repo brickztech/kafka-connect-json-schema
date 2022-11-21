@@ -16,12 +16,16 @@ import org.apache.kafka.connect.transforms.Transformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.brickztech.nhkv.kafka.connect.Utils.bytesToHex;
 import static com.github.jcustenborder.kafka.connect.json.Utils.*;
@@ -30,11 +34,31 @@ import static com.github.jcustenborder.kafka.connect.json.Utils.*;
 @Description("The HashFields will generate SHA-256 fingerprint from specified fields.")
 @DocumentationTip("This transformation expects data to be in either Struct or Map format.")
 public class HashFields<R extends ConnectRecord<R>> implements Transformation<R> {
-
+	
     private static final String PURPOSE = "hash fields";
     private Cache<Schema, Schema> schemaUpdateCache;
     private HashFieldsConfig config;
     private MessageDigest digest;
+    
+    static final Properties aliasProps = new Properties();
+    static {
+    	try {
+    		InputStream confStream = HashFields.class.getClassLoader().getResourceAsStream("com/brickztech/nhkv/kafka/connect/field-alias.properties");
+    		if(confStream!=null) {
+    			aliasProps.load(confStream);
+    		}else {
+    			throw new RuntimeException("alias config stream is null");
+    		}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    	if(aliasProps.size()==0) {
+    		throw new RuntimeException("alias config is not found");
+    	}else {
+    		System.out.println("aliasProps.size="+aliasProps.size());
+    	}
+    }
+    
 
     @Override
     public R apply(R record) {
@@ -63,12 +87,23 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
 
     private R applyWithSchema(R record) {
         final Struct value = requireStruct(record.value(), PURPOSE);
-        StringBuilder data = new StringBuilder();
+        StringBuilder hashData = new StringBuilder();
+        
         value.schema().fields().stream().map(Field::name).filter(config.from::contains).forEach(key -> {
-            Optional<Object> fieldValue = Optional.ofNullable(value.get(key));
-            fieldValue.ifPresent(v -> data.append(key).append(':').append(v));
+            Optional<Object> field = Optional.ofNullable(value.get(key));
+            if(field.isPresent()) {
+            	Object fieldValue = field.get();
+            	if(isNotEmpty(fieldValue)) {
+                    String jsonField = HashFields.aliasProps.getProperty(key.toLowerCase(), key);
+                	hashData.append(jsonField).append(':').append(fieldValue);
+            	}
+            }
         });
-        String hashCode = bytesToHex(digest.digest(data.toString().getBytes(StandardCharsets.UTF_8)));
+        String hashCode = ""; 
+        if(hashData.length() > 0) {
+        	hashCode = bytesToHex(digest.digest(hashData.toString().getBytes(StandardCharsets.UTF_8)));
+        }
+        
         Schema updatedSchema = schemaUpdateCache.get(value.schema());
         if (updatedSchema == null) {
             updatedSchema = makeUpdatedSchema(value.schema());
@@ -76,9 +111,16 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
         }
         Struct updatedValue = new Struct(updatedSchema);
         value.schema().fields().stream().forEach(field -> updatedValue.put(field.name(), value.get(field)));
-        updatedValue.put(config.field, hashCode);
+        
+        String hashName = HashFields.aliasProps.getProperty(config.field.toLowerCase(), config.field);
+        updatedValue.put(hashName, hashCode);
         return newRecord(record, updatedSchema, updatedValue);
     }
+
+	private boolean isNotEmpty(Object fieldValue) {
+		return (fieldValue!=null && !(fieldValue instanceof String)) ||
+				(fieldValue!=null && (fieldValue instanceof String) && !((String)fieldValue).trim().equals(""));
+	}
 
     private Schema makeUpdatedSchema(Schema schema) {
         final SchemaBuilder builder = SchemaUtil.copySchemaBasics(schema, SchemaBuilder.struct());
