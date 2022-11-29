@@ -27,7 +27,7 @@
         <version>2.4.0</version>
     </parent>
     <artifactId>kafka-connect-json-schema</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3</version>
     <name>kafka-connect-json-schema</name>
     <description>This project provides a mechanism to marshall data from JSON to a Kafka Connect struct based on a user provided JSON schema. This is accomplished by using the FromJson transformation which will convert data as a transformation. The JsonSchemaConverter transformation can be used to read and write data as Json.</description>
     <url>https://github.com/jcustenborder/kafka-connect-json-schema</url>

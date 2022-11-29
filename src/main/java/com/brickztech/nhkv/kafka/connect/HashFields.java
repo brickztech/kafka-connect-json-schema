@@ -125,7 +125,11 @@ public class HashFields<R extends ConnectRecord<R>> implements Transformation<R>
     private Schema makeUpdatedSchema(Schema schema) {
         final SchemaBuilder builder = SchemaUtil.copySchemaBasics(schema, SchemaBuilder.struct());
         schema.fields().stream().forEach(field -> builder.field(field.name(), field.schema()));
-        builder.field(config.field, Schema.STRING_SCHEMA);
+        if (config.optional) {
+            builder.field(config.field, Schema.OPTIONAL_STRING_SCHEMA);
+        } else {
+            builder.field(config.field, Schema.STRING_SCHEMA);
+        }
         return builder.build();
     }
 

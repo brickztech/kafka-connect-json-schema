@@ -100,10 +100,11 @@ class HashFieldsTest {
     }
 
     @Test
-    public void whenAllFieldsNullThanEmptyStringHashExpected() throws NoSuchAlgorithmException {
+    public void whenAllFieldsNullThanEmptyStringExpected() throws NoSuchAlgorithmException {
         Map<String, String> settings = ImmutableMap.of(
                 HashFieldsConfig.FIELD_CONF, "HashFieldName",
-                HashFieldsConfig.FROM_CONF, "repdoc_tax_nr,repdoc_group_tax_nr,repdoc_foreign_tax_nr_eu"
+                HashFieldsConfig.FROM_CONF, "repdoc_tax_nr,repdoc_group_tax_nr,repdoc_foreign_tax_nr_eu",
+                HashFieldsConfig.OPTIONAL_CONF, "False"
         );
         hashTransform.configure(settings);
         SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
@@ -152,6 +153,19 @@ class HashFieldsTest {
             assertThat("org.apache.kafka.connect.errors.DataException exception expected", false);
         } catch (org.apache.kafka.connect.errors.DataException ignore) {
         }
+    }
+
+    @Test
+    public void whenFieldIsOptionalThenSchemaOfFieldIsOptional() {
+        Map<String, String> settings = ImmutableMap.of(
+                HashFieldsConfig.FIELD_CONF, "IntegratorIndex",
+                HashFieldsConfig.FROM_CONF, "public_service_int_provider_id,public_service_int_provider_name",
+                HashFieldsConfig.OPTIONAL_CONF, "True"
+        );
+        hashTransform.configure(settings);
+        SinkRecord hashedRecord = hashTransform.apply(fromJsonTransformed);
+        Struct hashed = (Struct) hashedRecord.value();
+        assertThat(hashed.schema().schema().field(settings.get(HashFieldsConfig.FIELD_CONF)).schema().isOptional(), is(equalTo(true)));
     }
 
 }
